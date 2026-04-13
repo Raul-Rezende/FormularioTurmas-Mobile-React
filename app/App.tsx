@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import {Link} from 'expo-router';
+import styles from '../css/style.css';
+
 
 export default function App() {
   const [nome, setNome] = useState('');
@@ -52,7 +55,7 @@ export default function App() {
           onChangeText={setDescricao}
         />
 
-        <Button title="Enviar" onPress={enviarFormulario} />
+        <button title="Enviar" onPress={enviarFormulario} />
 
         {mostrarDados ? (
           <View style={styles.resultado}>
