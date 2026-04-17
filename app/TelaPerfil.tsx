@@ -13,6 +13,7 @@ export default function Perfil() {
       const dados = await AsyncStorage.getItem('@dados_usuario');
       if (dados) {
         setNomeSalvo(JSON.parse(dados).nome);
+        setRMSalvo(JSON.parse(dados).rm);
       }
     };
     buscarDados();

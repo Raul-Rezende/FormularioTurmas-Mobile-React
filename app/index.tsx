@@ -33,14 +33,14 @@ export default function Cadastro() {
 
   const salvarEContinuar = async () => {
     //Verificar se todos os campos estão preenchidos
-    if (!nome || !turma || !telefone || !cpf) {
+    if (!nome || !turma || !numRM || !telefone || !cpf) {
       Alert.alert('Erro de Validação', 'Por favor, preencha todos os campos antes de continuar.');
       return;
     }
 
     try {
       //Salvar os dados no AsyncStorage
-      const dados = { nome, turma, telefone, cpf };
+      const dados = { nome, turma, numRM, telefone, cpf };
       await AsyncStorage.setItem('@dados_usuario', JSON.stringify(dados));
       
       //Após salvar os dados, redirecionar para a tela de perfil
