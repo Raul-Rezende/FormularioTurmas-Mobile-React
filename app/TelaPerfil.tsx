@@ -24,7 +24,7 @@ export default function Perfil() {
       
       <View style={styles.card}>
         <Image 
-          source={{ uri: './assets/eu.jpg' }}
+          source={{ uri: 'https://raw.githubusercontent.com/Raul-Rezende/FormularioTurmas-Mobile-React/main/assets/eu.jpg' }}
           style={styles.foto}
         />
         <Text style={styles.infoTexto}>Nome: Seu Nome Completo Aqui</Text>
