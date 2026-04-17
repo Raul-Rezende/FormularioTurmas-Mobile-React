@@ -9,7 +9,7 @@ export default function Layout() {
       }}
     >
       <Stack.Screen name="index" options={{ title: "Cadastro" }} />
-      <Stack.Screen name="perfil" options={{ title: "Perfil do Aluno" }} />
+      <Stack.Screen name="TelaPerfil" options={{ title: "Perfil do Aluno" }} />
     </Stack>
   );
 }
