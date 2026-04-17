@@ -1,106 +1,106 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import {Link} from 'expo-router';
-import styles from '../css/style.css';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { router } from 'expo-router';
+import { MaskedTextInput } from 'react-native-mask-text';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-export default function App() {
+export default function Cadastro() {
   const [nome, setNome] = useState('');
-  const [curso, setCurso] = useState('');
-  const [disciplina, setDisciplina] = useState('');
-  const [descricao, setDescricao] = useState('');
+  const [turma, setTurma] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [cpf, setCpf] = useState('');
 
-  const [mostrarDados, setMostrarDados] = useState(false);
-
-  // Executa uma ação quando o aplicativo for carregado
+  // 4. Persistência e Autopreenchimento (Recuperar)
   useEffect(() => {
-    console.log("Aplicativo iniciado com sucesso!");
+    const carregarDados = async () => {
+      try {
+        const dadosSalvos = await AsyncStorage.getItem('@dados_usuario');
+        if (dadosSalvos) {
+          const dados = JSON.parse(dadosSalvos);
+          setNome(dados.nome || '');
+          setTurma(dados.turma || '');
+          setTelefone(dados.telefone || '');
+          setCpf(dados.cpf || '');
+        }
+      } catch (error) {
+        console.error("Erro ao carregar os dados:", error);
+      }
+    };
+    carregarDados();
   }, []);
 
-  // Função para o botão
-  const enviarFormulario = () => {
-    setMostrarDados(true);
+  const salvarEContinuar = async () => {
+    // 3. Validação de Formulário
+    if (!nome || !turma || !telefone || !cpf) {
+      Alert.alert('Erro de Validação', 'Por favor, preencha todos os campos antes de continuar.');
+      return;
+    }
+
+    try {
+      // 4. Persistência e Autopreenchimento (Salvar)
+      const dados = { nome, turma, telefone, cpf };
+      await AsyncStorage.setItem('@dados_usuario', JSON.stringify(dados));
+      
+      // 1. Estrutura de Navegação (Ir para o Perfil)
+      router.push('/perfil');
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível salvar os dados no momento.');
+    }
   };
 
   return (
-    // SafeAreaView container principal
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <Text style={styles.titulo}>Formulário de Cadastro</Text>
 
-      <View style={styles.formulario}>
+      <Text style={styles.label}>Nome Completo:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Digite seu nome"
+        value={nome}
+        onChangeText={setNome}
+      />
 
-        <Text style={styles.titulo}>Formulário de Turmas - CP1(2TDSPF)</Text>
+      <Text style={styles.label}>Turma:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Digite sua turma"
+        value={turma}
+        onChangeText={setTurma}
+      />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Nome"
-          value={nome}
-          onChangeText={setNome}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Curso"
-          value={curso}
-          onChangeText={setCurso}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Disciplina"
-          value={disciplina}
-          onChangeText={setDisciplina}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Breve descrição ou apresentação pessoal"
-          value={descricao}
-          onChangeText={setDescricao}
-        />
+      {/* 2. Máscaras de Entrada (Telefone e CPF) */}
+      <Text style={styles.label}>Telefone:</Text>
+      <MaskedTextInput
+        mask="(99) 99999-9999"
+        style={styles.input}
+        placeholder="(00) 00000-0000"
+        value={telefone}
+        onChangeText={(text, rawText) => setTelefone(text)}
+        keyboardType="numeric"
+      />
 
-        <button title="Enviar" onPress={enviarFormulario} />
+      <Text style={styles.label}>CPF:</Text>
+      <MaskedTextInput
+        mask="999.999.999-99"
+        style={styles.input}
+        placeholder="000.000.000-00"
+        value={cpf}
+        onChangeText={(text, rawText) => setCpf(text)}
+        keyboardType="numeric"
+      />
 
-        {mostrarDados ? (
-          <View style={styles.resultado}>
-            <Text style={styles.texto}>Nome: {nome}</Text>
-            <Text style={styles.texto}>Curso: {curso}</Text>
-            <Text style={styles.texto}>Disciplina: {disciplina}</Text>
-            <Text style={styles.texto}>Descrição: {descricao}</Text>
-          </View>
-        ) : null}
-
-      </View>
-    </SafeAreaView>
+      <TouchableOpacity style={styles.botao} onPress={salvarEContinuar}>
+        <Text style={styles.textoBotao}>Salvar / Enviar</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
-// Estilização Básica
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-  },
-  formulario: {
-    margin: 20,
-  },
-  titulo: {
-    color: 'red',
-    fontSize: 24,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#000',
-    padding: 10,
-    marginBottom: 10,
-    fontSize: 16,
-  },
-  resultado: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: '#e0e0e0',
-  },
-  texto: {
-    fontSize: 16,
-    marginBottom: 5,
-  }
+  container: { flex: 1, backgroundColor: '#f5f5f5', padding: 20, justifyContent: 'center' },
+  titulo: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center', color: '#333' },
+  label: { fontSize: 16, marginBottom: 5, color: '#555' },
+  input: { borderWidth: 1, borderColor: '#ccc', backgroundColor: '#fff', padding: 12, marginBottom: 15, borderRadius: 8, fontSize: 16 },
+  botao: { backgroundColor: '#121212', padding: 15, borderRadius: 8, alignItems: 'center', marginTop: 10 },
+  textoBotao: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
 });
