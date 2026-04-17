@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Perfil() {
   const [nomeSalvo, setNomeSalvo] = useState('');
 
-  // Busca o nome do usuário apenas para dar boas-vindas personalizadas
+  //Busca o nome do usuário (bem-vindo) ao carregar a tela de perfil
   useEffect(() => {
     const buscarDados = async () => {
       const dados = await AsyncStorage.getItem('@dados_usuario');
@@ -17,14 +17,14 @@ export default function Perfil() {
     buscarDados();
   }, []);
 
+  //Exibir as informações do perfil do aluno
   return (
     <View style={styles.container}>
       <Text style={styles.saudacao}>Bem-vindo(a), {nomeSalvo}!</Text>
       
-      {/* 1. Tela de Perfil: Seu Nome, Foto e RM */}
       <View style={styles.card}>
         <Image 
-          source={{ uri: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }} // Substitua por um link de uma foto sua ou um require('./caminho/foto.png')
+          source={{ uri: './assets/eu.jpg' }}
           style={styles.foto}
         />
         <Text style={styles.infoTexto}>Nome: Seu Nome Completo Aqui</Text>
