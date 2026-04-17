@@ -20,7 +20,7 @@ export default function Cadastro() {
           const dados = JSON.parse(dadosSalvos);
           setNome(dados.nome || '');
           setTurma(dados.turma || '');
-          setRM(dados.rm || '');
+          setRM(dados.numRM || '');
           setTelefone(dados.telefone || '');
           setCpf(dados.cpf || '');
         }
@@ -43,7 +43,7 @@ export default function Cadastro() {
       const dados = { nome, turma, numRM, telefone, cpf };
       await AsyncStorage.setItem('@dados_usuario', JSON.stringify(dados));
       
-      //Após salvar os dados, redirecionar para a tela de perfil
+      //Redirecionar para a tela de perfil
       router.push('/TelaPerfil');
     } catch (error) {
       Alert.alert('Erro', 'Não foi possível salvar os dados no momento.');

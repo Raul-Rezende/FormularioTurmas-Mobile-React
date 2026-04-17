@@ -7,22 +7,29 @@ export default function Perfil() {
   const [nomeSalvo, setNomeSalvo] = useState('');
   const [rmSalvo, setRMSalvo] = useState('');
 
-  //Busca o nome do usuário (bem-vindo) ao carregar a tela de perfil
+  // Busca o nome e rm do usuário em uma única chamada
   useEffect(() => {
     const buscarDados = async () => {
-      const dados = await AsyncStorage.getItem('@dados_usuario');
-      if (dados) {
-        setNomeSalvo(JSON.parse(dados).nome);
-        setRMSalvo(JSON.parse(dados).rm);
+      try {
+        const dados = await AsyncStorage.getItem('@dados_usuario');
+        if (dados) {
+          const dadosConvertidos = JSON.parse(dados);
+          
+          // Define os estados usando o objeto convertido
+          setNomeSalvo(dadosConvertidos.nome || '');
+          setRMSalvo(dadosConvertidos.numRM || ''); 
+        }
+      } catch (error) {
+        console.error("Erro ao buscar os dados:", error);
       }
     };
     buscarDados();
   }, []);
 
-  //Exibir as informações do perfil do aluno
+  // Exibir as informações do perfil do aluno
   return (
     <View style={styles.container}>
-      <Text style={styles.saudacao}>Bem-vindo(a), {nomeSalvo}!</Text>
+      <Text style={styles.saudacao}>Bem-vindo(a)!</Text>
       
       <View style={styles.card}>
         <Image 
@@ -30,7 +37,7 @@ export default function Perfil() {
           style={styles.foto}
         />
         <Text style={styles.infoTexto}>Nome: {nomeSalvo}</Text>
-        <Text style={styles.infoTexto}>RM: {rmSalvo} </Text>
+        <Text style={styles.infoTexto}>RM: {rmSalvo}</Text>
       </View>
 
       <TouchableOpacity style={styles.botaoVoltar} onPress={() => router.back()}>
