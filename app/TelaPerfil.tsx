@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Perfil() {
   const [nomeSalvo, setNomeSalvo] = useState('');
+  const [rmSalvo, setRMSalvo] = useState('');
 
   //Busca o nome do usuário (bem-vindo) ao carregar a tela de perfil
   useEffect(() => {
@@ -27,8 +28,8 @@ export default function Perfil() {
           source={{ uri: 'https://raw.githubusercontent.com/Raul-Rezende/FormularioTurmas-Mobile-React/main/assets/eu.jpg' }}
           style={styles.foto}
         />
-        <Text style={styles.infoTexto}>Nome: Seu Nome Completo Aqui</Text>
-        <Text style={styles.infoTexto}>RM: 123456</Text>
+        <Text style={styles.infoTexto}>Nome: {nomeSalvo}</Text>
+        <Text style={styles.infoTexto}>RM: {rmSalvo} </Text>
       </View>
 
       <TouchableOpacity style={styles.botaoVoltar} onPress={() => router.back()}>

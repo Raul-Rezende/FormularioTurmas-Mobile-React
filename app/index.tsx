@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Cadastro() {
   const [nome, setNome] = useState('');
   const [turma, setTurma] = useState('');
+  const [numRM, setRM] = useState('');
   const [telefone, setTelefone] = useState('');
   const [cpf, setCpf] = useState('');
 
@@ -19,6 +20,7 @@ export default function Cadastro() {
           const dados = JSON.parse(dadosSalvos);
           setNome(dados.nome || '');
           setTurma(dados.turma || '');
+          setRM(dados.rm || '');
           setTelefone(dados.telefone || '');
           setCpf(dados.cpf || '');
         }
@@ -67,6 +69,14 @@ export default function Cadastro() {
         placeholder="Digite sua turma"
         value={turma}
         onChangeText={setTurma}
+      />
+
+      <Text style={styles.label}>RM:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Digite seu RM"
+        value={numRM}
+        onChangeText={setRM}
       />
 
       <Text style={styles.label}>Telefone:</Text>
